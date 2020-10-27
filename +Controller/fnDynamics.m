@@ -6,8 +6,8 @@ function dz = fnDynamics(z,u,vd)
 v = z(1,:);
 T = u;
 
-D = 0.5*vd.aero.density*vd.aero.A*vd.aero.Cd.*v.^2;
-dv = (1/vd.chassis.m)*((1/vd.tyres.Rl).*T - D)./v;
+D = 0.5*vd.aero.rho*vd.aero.Ax*vd.aero.Cx.*v.^2;
+dv = (1/vd.chassis.m)*((1/vd.tyres.rear.Rl).*T - D)./v;
 
 dz = [dv];
 

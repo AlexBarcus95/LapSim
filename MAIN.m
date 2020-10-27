@@ -22,29 +22,17 @@ switch problem.options.method
         error('Invalid method.');
 end
 
-%% Initialise Track Definition
+%% Initialise Track, System and Car Parameters
 
-td.sLap = linspace(0,sDist,gridSize);
-
-curv = zeros(1,gridSize);
-curv(ceil(length(curv)*0.3)) = 0.02;
-curv(ceil(length(curv)*0.8)) = 0.1;
-
-td.curv = curv;
-
-%% Initialise Car Parameters
-
-vd.aero.density = 1.3;
-vd.aero.A = 1.5;
-vd.aero.Cd = 1;
-vd.tyres.Rl = 0.5;
-vd.chassis.m = 100;
+td          = Initialise.fnInitTrack(sDist,gridSize);
+dsSystem    = Initialise.fnInitSystem(td);
+vd          = Initialise.fnInitVd(dsSystem);
 
 %% Set up function handles for the dynamics, objective, and constraints
 
 problem.func.stateDynamics = @(s,x,u)( Controller.fnDynamics(x,u,vd) );
 problem.func.objective = @(s,x,u)( Controller.fnObjective(x) );
-problem.func.constraints = @(s,x,u)( Controller.fnConstraints(s,x,vd,td) );
+problem.func.constraints = @(s,x,u)( Controller.fnConstraints(s,x,vd,dsSystem) );
 
 %% Set up the bounds of the states and controls
 
