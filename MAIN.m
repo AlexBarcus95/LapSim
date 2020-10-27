@@ -1,22 +1,23 @@
-% MAIN.m  --  LapSim
+%% MAIN.m  --  LapSim
 
-clc; clear;
+clear;
+clc;
 
-%% Set Global Parameters
+%% Set Collocation Parameters
 
 sDist = 300;
-% problem.options.method = 'hermiteSimpson';
 problem.options.method = 'trapezoid';
+% problem.options.method = 'hermiteSimpson';
 
 switch problem.options.method
-    case 'hermiteSimpson'
-        nPoints = 25; % TEMP
-        problem.options.hermiteSimpson.nSegment = nPoints;
-        gridSize = 2*nPoints + 1;
     case 'trapezoid'
         nPoints = 50; % TEMP
         problem.options.trapezoid.nGrid = nPoints;
         gridSize = nPoints;
+    case 'hermiteSimpson'
+        nPoints = 25; % TEMP
+        problem.options.hermiteSimpson.nSegment = nPoints;
+        gridSize = 2*nPoints + 1;
     otherwise
         error('Invalid method.');
 end

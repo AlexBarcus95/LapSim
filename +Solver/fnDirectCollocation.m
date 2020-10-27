@@ -131,14 +131,14 @@ function cost = myObjective(z,pack,objective,weights)
 [t,x,u] = unPackDecVar(z,pack);
 
 dt = (t(end)-t(1))/(pack.nTime-1);
-integrand = objective(t,x,u);  %Calculate the integrand of the cost function
-cost = dt*integrand*weights;  %Trapazoidal integration
+integrand = objective(t,x,u);   % Calculate the integrand of the cost function
+cost = dt*integrand*weights;    % Integration
 
 end
 
 %%%%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%%%%
 
-function [c, ceq] = myConstraint(z,pack,dynFun, constraints, defectCst)
+function [c, ceq] = myConstraint(z,pack,dynFun,constraints,defectCst)
 % This function computes the defects along the trajectory
 % and then evaluates the user-defined constraint functions.
 
