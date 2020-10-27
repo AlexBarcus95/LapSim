@@ -12,7 +12,7 @@ if ~isfield(problem.func,'stateDynamics')
     error('Field ''stateDynamics'' cannot be ommitted from ''problem.func'''); end
 if ~isfield(problem.func,'objective')
     error('Field ''objective'' cannot be ommitted from ''problem.func'''); end
-if ~isfield(problem.func,'pathCst'), problem.func.pathCst = []; end
+if ~isfield(problem.func,'constraints'), problem.func.constraints = []; end
 
 %%%% Compute nState and nControl:
 

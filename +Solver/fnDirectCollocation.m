@@ -31,7 +31,7 @@ zUpp = packDecVar(tUpp,xUpp,uUpp);
 %%%% Set up problem for fmincon:
 P.objective = @(z)( myObjective(z, pack, F.objective, F.weights) );   %Numerical gradients
 
-P.nonlcon = @(z)( myConstraint(z, pack, F.stateDynamics, F.pathCst, F.defectCst) ); %Numerical gradients
+P.nonlcon = @(z)( myConstraint(z, pack, F.stateDynamics, F.constraints, F.defectCst) ); %Numerical gradients
 
 P.x0 = zGuess;
 P.lb = zLow;
@@ -138,7 +138,7 @@ end
 
 %%%%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%%%%
 
-function [c, ceq] = myConstraint(z,pack,dynFun, pathCst, defectCst)
+function [c, ceq] = myConstraint(z,pack,dynFun, constraints, defectCst)
 % This function computes the defects along the trajectory
 % and then evaluates the user-defined constraint functions.
 
@@ -150,6 +150,6 @@ f = dynFun(t,x,u);
 defects = defectCst(dt,x,f);
 
 %%%% Call user-defined constraints and pack up:
-[c, ceq] = Solver.fnCollectConstraints(t,x,u,defects, pathCst);
+[c, ceq] = Solver.fnCollectConstraints(t,x,u,defects,constraints);
 
 end

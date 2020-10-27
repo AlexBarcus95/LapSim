@@ -1,13 +1,10 @@
-% MAIN.m  --  LTS
+% MAIN.m  --  LapSim
 
 clc; clear;
 
-%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%
-%                      Global Parameters                                  %
-%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%
+%% Set Global Parameters
 
 sDist = 300;
-% nPoints = 50;
 % problem.options.method = 'hermiteSimpson';
 problem.options.method = 'trapezoid';
 
@@ -24,19 +21,7 @@ switch problem.options.method
         error('Invalid method.');
 end
 
-%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%
-%                      Car Parameters                                     %
-%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%
-
-vd.aero.density = 1.3;
-vd.aero.A = 1.5;
-vd.aero.Cd = 1;
-vd.tyres.Rl = 0.5;
-vd.chassis.m = 100;
-
-%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%
-%                      Track Definition                                   %
-%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%
+%% Initialise Track Definition
 
 td.sLap = linspace(0,sDist,gridSize);
 
@@ -46,17 +31,21 @@ curv(ceil(length(curv)*0.8)) = 0.1;
 
 td.curv = curv;
 
-%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%
-%                      Set up function handles                            %
-%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%
+%% Initialise Car Parameters
+
+vd.aero.density = 1.3;
+vd.aero.A = 1.5;
+vd.aero.Cd = 1;
+vd.tyres.Rl = 0.5;
+vd.chassis.m = 100;
+
+%% Set up function handles for the dynamics, objective, and constraints
 
 problem.func.stateDynamics = @(s,x,u)( Controller.fnDynamics(x,u,vd) );
 problem.func.objective = @(s,x,u)( Controller.fnObjective(x) );
-problem.func.pathCst = @(s,x,u)( Controller.fnPathCst(s,x,vd,td) );
+problem.func.constraints = @(s,x,u)( Controller.fnConstraints(s,x,vd,td) );
 
-%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%
-%                 Set up bounds on state and control                      %
-%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%
+%% Set up the bounds of the states and controls
 
 problem.bounds.initialTime.low = 0;
 problem.bounds.initialTime.upp = 0;
@@ -75,10 +64,8 @@ problem.bounds.finalState.upp = Inf;
 problem.bounds.control.low = -500;
 problem.bounds.control.upp = 200;
 
-%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%
-%                 Initialize trajectory with guess                        %
-%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%
-% 
+%% Set initial guess
+
 % problem.guess.time = linspace(0, sDist, gridSize);
 % problem.guess.state = interp1(problem.guess.time', [1,40]', problem.guess.time')';
 % problem.guess.control = interp1(problem.guess.time', [-100,200]', problem.guess.time')';
@@ -87,9 +74,7 @@ problem.guess.time = [0, sDist];
 problem.guess.state = [1, 40];
 problem.guess.control = [-100,200];  
 
-%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%
-%                      Options for Transcription                          %
-%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%
+%% Set solver options and solve LapSim
 
 problem.options.nlpOpt = optimset(...
     'display','iter',...
@@ -97,15 +82,9 @@ problem.options.nlpOpt = optimset(...
     'tolFun',1e-7);
 problem.options.nlpOpt.MaxIter = 1e4;
 
-%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%
-%                            Solve!                                       %
-%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%
-
 soln = Solver.LTS(problem);
 
-%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%
-%                        Display the solution                             %
-%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%
+%% Plot solution
 
 f = figure(1); clf;
 
