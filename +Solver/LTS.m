@@ -30,6 +30,7 @@ end
 
 %% Solve the problem by direct collocation
 soln = Solver.fnDirectCollocation(problem);
+soln.problem = problem;
 
 end
 

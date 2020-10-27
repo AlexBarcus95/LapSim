@@ -59,8 +59,6 @@ soln.info.nlpTime = nlpTime;
 soln.info.exitFlag = exitFlag;
 soln.info.objVal = objVal;
 
-soln.problem = problem;  % Return the fully detailed problem struct
-
 end
 
 

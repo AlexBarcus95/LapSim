@@ -1,2 +1,2 @@
 # LapSim
-Lap-time simulation in an optimal control optimisation framework
+Lap-time simulation with an optimal control optimisation formulation
