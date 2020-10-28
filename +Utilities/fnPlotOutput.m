@@ -4,8 +4,8 @@ f = figure(1);
 clf(f);
 
 s = soln.grid.time;
-z = soln.grid.state;
-v = z(1,:);
+x = soln.grid.state;
+v = x(1,:);
 u = soln.grid.control;
 T = u(1,:);
 
@@ -14,7 +14,6 @@ subplot(2,1,1);
 plot(s,v,'LineWidth',3);
 hold on
 plot(s,v,'ob');
-% plot(s,zeros(1,length(s)) + mean(v), 'or')
 xlabel('distance (m)');
 ylabel('velocity (m/s)');
 xlim([s(1), s(end)]);

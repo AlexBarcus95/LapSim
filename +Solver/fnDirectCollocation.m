@@ -61,11 +61,7 @@ soln.info.objVal = objVal;
 
 end
 
-
-%%%%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%%%%
-%%%%                          SUB FUNCTIONS                            %%%%
-%%%%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%%%%
-
+%% Utility Functions
 
 function [z,pack] = packDecVar(t,x,u)
 
@@ -101,8 +97,6 @@ pack.uIdx = uIdx;
 
 end
 
-%%%%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%%%%
-
 function [t,x,u] = unPackDecVar(z,pack)
 
 nTime = pack.nTime;
@@ -121,7 +115,7 @@ u = reshape(u,nControl,nTime);
 
 end
 
-%%%%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%%%%
+%% Objective function
 
 function cost = myObjective(z,pack,objective,weights)
 % This function returns the final weighted cost
@@ -134,7 +128,7 @@ cost = dt*integrand*weights;    % Integration
 
 end
 
-%%%%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%%%%
+%% Constraint Function
 
 function [c, ceq] = myConstraint(z,pack,dynFun,constraints,defectCst)
 % This function computes the defects along the trajectory

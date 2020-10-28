@@ -1,9 +1,9 @@
-function f = fnObjective(z)
+function f = fnObjective(x)
 % 
 %  f = f(x,y) = integrand of the objective function
 %
 
-v = z(1,:);
+v = x(1,:);
 
 % Minimise inverse of velocity
 f = 1./v;

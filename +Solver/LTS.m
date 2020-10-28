@@ -34,6 +34,8 @@ soln.problem = problem;
 
 end
 
+%% Defect Calculations
+
 function defects = computeTrapezoidDefects(dt,x,f)
 %
 % This function computes the defects that are used to enforce the
@@ -51,7 +53,7 @@ xUpp = x(:,idxUpp);
 fLow = f(:,idxLow);
 fUpp = f(:,idxUpp);
 
-% This is the key line:  (Trapazoid Rule)
+% (Trapezoid Rule)
 defects = xUpp-xLow - 0.5*dt*(fLow+fUpp);
 
 end
