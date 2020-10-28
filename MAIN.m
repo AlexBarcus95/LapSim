@@ -6,8 +6,8 @@ clc;
 %% Set Collocation Parameters
 
 sDist = 300;
-problem.options.method = 'trapezoid';
-% problem.options.method = 'hermiteSimpson';
+% problem.options.method = 'trapezoid';
+problem.options.method = 'hermiteSimpson';
 
 switch problem.options.method
     case 'trapezoid'

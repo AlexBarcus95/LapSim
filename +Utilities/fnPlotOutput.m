@@ -17,7 +17,7 @@ plot(s,v,'ob');
 xlabel('distance (m)');
 ylabel('velocity (m/s)');
 xlim([s(1), s(end)]);
-ylim([0, 100*round(max(v)/100,1)]);
+ylim([0, 100*round(max(v)/100,1) + 5]);
 title(['Velocity profile || ', num2str(soln.info.objVal), 's']);
 
 subplot(2,1,2);
