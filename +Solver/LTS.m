@@ -36,16 +36,16 @@ end
 
 %% Defect Calculations
 
-function defects = computeTrapezoidDefects(dt,x,f)
+function defects = computeTrapezoidDefects(ds,x,f)
 %
 % This function computes the defects that are used to enforce the
 % continuous dynamics of the system along the trajectory.
 %
 
-nTime = size(x,2);
+nGrid = size(x,2);
 
-idxLow = 1:(nTime-1);
-idxUpp = 2:nTime;
+idxLow = 1:(nGrid-1);
+idxUpp = 2:nGrid;
 
 xLow = x(:,idxLow);
 xUpp = x(:,idxUpp);
@@ -54,20 +54,20 @@ fLow = f(:,idxLow);
 fUpp = f(:,idxUpp);
 
 % (Trapezoid Rule)
-defects = xUpp-xLow - 0.5*dt*(fLow+fUpp);
+defects = xUpp-xLow - 0.5*ds*(fLow+fUpp);
 
 end
 
-function defects = computeHSDefects(dt,x,f)
+function defects = computeHSDefects(ds,x,f)
 %
 % This function computes the defects that are used to enforce the
 % continuous dynamics of the system along the trajectory.
 %
 
-nTime = size(x,2);
+nGrid = size(x,2);
 nState = size(x,1);
 
-iLow = 1:2:(nTime-1);
+iLow = 1:2:(nGrid-1);
 iMid = iLow + 1;
 iUpp = iMid + 1;
 
@@ -80,13 +80,13 @@ fMid = f(:,iMid);
 fUpp = f(:,iUpp);
 
 % Mid-point constraint (Hermite)
-defectMidpoint = xMid - (xUpp+xLow)/2 - dt*(fLow-fUpp)/4;
+defectMidpoint = xMid - (xUpp+xLow)/2 - ds*(fLow-fUpp)/4;
 
 % Interval constraint (Simpson)
-defectInterval = xUpp - xLow - dt*(fUpp + 4*fMid + fLow)/3;
+defectInterval = xUpp - xLow - ds*(fUpp + 4*fMid + fLow)/3;
 
 % Pack up all defects: Arrnage for bandedness
-defects = zeros(nState,nTime-1);
+defects = zeros(nState,nGrid-1);
 defects(:,iLow) = defectInterval;
 defects(:,iMid) = defectMidpoint;
 

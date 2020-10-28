@@ -6,8 +6,8 @@ clc;
 %% Set Collocation Parameters
 
 sDist = 300;
-% problem.options.method = 'trapezoid';
-problem.options.method = 'hermiteSimpson';
+problem.options.method = 'trapezoid';
+% problem.options.method = 'hermiteSimpson';
 
 switch problem.options.method
     case 'trapezoid'
@@ -28,18 +28,15 @@ td          = Initialise.fnInitTrack(sDist,gridSize);
 dsSystem    = Initialise.fnInitSystem(td);
 vd          = Initialise.fnInitVd(dsSystem);
 
+problem.dsSystem = dsSystem;
+
 %% Set up function handles for the dynamics, objective, and constraints
 
-problem.func.stateDynamics = @(s,x,u)( Controller.fnDynamics(x,u,vd) );
-problem.func.objective = @(s,x,u)( Controller.fnObjective(x) );
-problem.func.constraints = @(s,x,u)( Controller.fnConstraints(s,x,vd,dsSystem) );
+problem.func.stateDynamics = @(x,u)( Controller.fnDynamics(x,u,vd) );
+problem.func.objective = @(x,u)( Controller.fnObjective(x) );
+problem.func.constraints = @(x,u)( Controller.fnConstraints(x,vd,dsSystem) );
 
 %% Set up the bounds of the states and controls
-
-problem.bounds.initialTime.low = 0;
-problem.bounds.initialTime.upp = 0;
-problem.bounds.finalTime.low = sDist;
-problem.bounds.finalTime.upp = sDist;
 
 problem.bounds.state.low = 0;
 problem.bounds.state.upp = Inf;
@@ -55,11 +52,6 @@ problem.bounds.control.upp = 200;
 
 %% Set initial guess
 
-% problem.guess.time = linspace(0, sDist, gridSize);
-% problem.guess.state = interp1(problem.guess.time', [1,40]', problem.guess.time')';
-% problem.guess.control = interp1(problem.guess.time', [-100,200]', problem.guess.time')';
-
-problem.guess.time = [0, sDist];
 problem.guess.state = [1, 40];
 problem.guess.control = [-100,200];  
 

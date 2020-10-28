@@ -1,4 +1,4 @@
-function [c, ceq] = fnCollectConstraints(t,x,u,defects,constraints)
+function [c, ceq] = fnCollectConstraints(x,u,defects,constraints)
 
 ceq_dyn = reshape(defects,numel(defects),1);
 
@@ -7,7 +7,7 @@ if isempty(constraints)
     c_path = [];
     ceq_path = [];
 else
-    [c_pathRaw, ceq_pathRaw] = constraints(t,x,u);
+    [c_pathRaw, ceq_pathRaw] = constraints(x,u);
     c_path = reshape(c_pathRaw,numel(c_pathRaw),1);
     ceq_path = reshape(ceq_pathRaw,numel(ceq_pathRaw),1);
 end

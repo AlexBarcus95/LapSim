@@ -3,7 +3,7 @@ function fnPlotOutput(soln)
 f = figure(1); 
 clf(f);
 
-s = soln.grid.time;
+s = soln.grid.sLap;
 x = soln.grid.state;
 v = x(1,:);
 u = soln.grid.control;

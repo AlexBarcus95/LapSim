@@ -1,4 +1,4 @@
-function [c, ceq] = fnConstraints(~,x,vd,dsSystem)
+function [c, ceq] = fnConstraints(x,vd,dsSystem)
 
 td = dsSystem.td;
 

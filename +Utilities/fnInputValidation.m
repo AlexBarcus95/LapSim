@@ -22,23 +22,11 @@ if ~isfield(problem.func,'constraints'), problem.func.constraints = []; end
 %%%% Check the problem bounds:
 
 if ~isfield(problem,'bounds')
-    problem.bounds.initialTime = [];
-    problem.bounds.finalTime = [];
     problem.bounds.state = [];
     problem.bounds.initialState = [];
     problem.bounds.finalState = [];
     problem.bounds.control = [];
 else
-    
-    if ~isfield(problem.bounds,'initialTime')
-        problem.bounds.initialTime = []; end
-    problem.bounds.initialTime = ...
-        checkLowUpp(problem.bounds.initialTime,1,1,'initialTime');
-    
-    if ~isfield(problem.bounds,'finalTime')
-        problem.bounds.finalTime = []; end
-    problem.bounds.finalTime = ...
-        checkLowUpp(problem.bounds.finalTime,1,1,'finalTime');
     
     if ~isfield(problem.bounds,'state')
         problem.bounds.state = []; end
