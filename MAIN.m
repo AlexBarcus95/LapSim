@@ -13,18 +13,18 @@ switch problem.options.method
     case 'trapezoid'
         nPoints = 50; % TEMP
         problem.options.trapezoid.nGrid = nPoints;
-        gridSize = nPoints;
+        nGrid = nPoints;
     case 'hermiteSimpson'
         nPoints = 25; % TEMP
         problem.options.hermiteSimpson.nSegment = nPoints;
-        gridSize = 2*nPoints + 1;
+        nGrid = 2*nPoints + 1;
     otherwise
         error('Invalid method.');
 end
 
 %% Initialise Track, System and Car Parameters
 
-td          = Initialise.fnInitTrack(sDist,gridSize);
+td          = Initialise.fnInitTrack(sDist,nGrid);
 dsSystem    = Initialise.fnInitSystem(td);
 vd          = Initialise.fnInitVd(dsSystem);
 
