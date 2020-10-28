@@ -2,7 +2,6 @@ function soln = fnDirectCollocation(problem)
 % soln = fnDirectCollocation(problem)
 
 %To make code more readable
-G       = problem.guess;
 B       = problem.bounds;
 F       = problem.func;
 Opt     = problem.options;
@@ -10,11 +9,8 @@ sLap    = problem.dsSystem.td.sLap;
 
 nGrid = length(F.weights);
 
-% Interpolate the guess at the grid-points for transcription:
-guess.state = interp1([sLap(1) sLap(end)]', G.state', sLap')';
-guess.control = interp1([sLap(1) sLap(end)]', G.control', sLap')';
-
-[zGuess, pack] = packDecVar(guess.state, guess.control);
+% Pack the initial guess
+[zGuess, pack] = packDecVar(problem.guess.state, problem.guess.control);
 
 % Unpack all bounds:
 xLow = [B.initialState.low, B.state.low*ones(1,nGrid-2), B.finalState.low];
