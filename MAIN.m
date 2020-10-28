@@ -52,8 +52,8 @@ problem.bounds.control.upp = 200;
 
 %% Set initial guess
 
-problem.guess.state = linspace(1,40,nGrid);
-problem.guess.control = linspace(-100,200,nGrid);
+problem.guess.state = linspace(12,12,nGrid);
+problem.guess.control = linspace(200,200,nGrid);
 
 %% Set solver options and solve LapSim
 
