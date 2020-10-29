@@ -1,16 +1,13 @@
 function problem = fnGetDefaultOptions(problem)
-% problem = fnGetDefaultOptions(problem)
-%
-% This function fills in any blank entries in the problem.options struct.
 
-%%%% Top-level default options:
+%% Set top-level default options
+
 OPT.method = 'trapezoid';
 OPT.verbose = 2;
 OPT.defaultAccuracy = 'medium';
 
-%%%% Basic setup
+%% Ensure that we have set the top-level options
 
-% ensure that options is not empty
 if ~isfield(problem,'options')
     problem.options.method = OPT.method;
 end
@@ -32,11 +29,13 @@ elseif isempty(opt.defaultAccuracy)
     opt.defaultAccuracy = OPT.defaultAccuracy;
 end
 
-% Figure out basic problem size:
-nState = size(problem.guess.state,1);
-nControl = size(problem.guess.control,1);
+%% Calculate the number of states and controls from the guess
 
-% Loop over opt and fill in nlpOpt struct:
+[nState, ~] = size(problem.guess.state);
+[nControl, ~] = size(problem.guess.control);
+
+%% Get the default nlpOpt structure
+
 switch opt.verbose
     case 0
         NLP_display = 'notify';
@@ -71,6 +70,9 @@ switch opt.defaultAccuracy
     otherwise
         error('Invalid value for options.defaultAccuracy')
 end
+
+%% Merge opt.nlpOpt and the default OPT.nlpOpt
+
 if isfield(opt,'nlpOpt')
     if isstruct(opt.nlpOpt) && ~isempty(opt.nlpOpt)
         names = fieldnames(opt.nlpOpt);
@@ -85,13 +87,14 @@ if isfield(opt,'nlpOpt')
 end
 opt.nlpOpt = OPT.nlpOpt;
 
-% Fill in method-specific paramters:
+%%  Fill in method-specific paramters
+
 OPT_method = opt.method;
 switch OPT_method
     case 'trapezoid'
-        OPT.trapezoid = defaults_trapezoid(opt.defaultAccuracy);
+        OPT.trapezoid = getDefaultTrapezoidOptions(opt.defaultAccuracy);
     case 'hermiteSimpson'
-        OPT.hermiteSimpson = defaults_hermiteSimpson(opt.defaultAccuracy);
+        OPT.hermiteSimpson = getDefaultHSOptions(opt.defaultAccuracy);
     otherwise
         error('Invalid value for options.method');
 end
@@ -110,9 +113,10 @@ end
 opt.(OPT_method) = OPT.(OPT_method);
 
 problem.options = opt;
+
 end
 
-function OPT_trapezoid = defaults_trapezoid(accuracy)
+function OPT_trapezoid = getDefaultTrapezoidOptions(accuracy)
 
 switch accuracy
     case 'low'
@@ -125,11 +129,9 @@ switch accuracy
         error('Invalid value for options.defaultAccuracy')
 end
 
-OPT_trapezoid.adaptiveDerivativeCheck = 'off';
-
 end
 
-function OPT_hermiteSimpson = defaults_hermiteSimpson(accuracy)
+function OPT_hermiteSimpson = getDefaultHSOptions(accuracy)
 
 switch accuracy
     case 'low'
@@ -141,7 +143,5 @@ switch accuracy
     otherwise
         error('Invalid value for options.defaultAccuracy')
 end
-
-OPT_hermiteSimpson.adaptiveDerivativeCheck = 'off';
 
 end

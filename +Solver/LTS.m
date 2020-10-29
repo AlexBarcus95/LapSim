@@ -6,6 +6,7 @@ problem = Utilities.fnInputValidation(problem);   % Check inputs
 problem = Utilities.fnGetDefaultOptions(problem); % Complete options struct
 
 %% Set the specific parameters for trapezoid or HS integration and collocation
+
 switch problem.options.method
     case 'trapezoid'
         nGrid = problem.options.trapezoid.nGrid;
@@ -29,16 +30,17 @@ switch problem.options.method
 end
 
 %% Solve the problem by direct collocation
+
 soln = Solver.fnDirectCollocation(problem);
 soln.problem = problem;
 
 end
 
-%% Defect Calculations
+%% Defect Calculation Functions
 
 function defects = computeTrapezoidDefects(ds,x,f)
 %
-% This function computes the defects that are used to enforce the
+% This function computes the Trapezoid defects that are used to enforce the
 % continuous dynamics of the system along the trajectory.
 %
 
@@ -60,7 +62,7 @@ end
 
 function defects = computeHSDefects(ds,x,f)
 %
-% This function computes the defects that are used to enforce the
+% This function computes the Hermite-Simpson defects that are used to enforce the
 % continuous dynamics of the system along the trajectory.
 %
 

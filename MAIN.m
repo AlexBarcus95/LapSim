@@ -6,8 +6,8 @@ clc;
 %% Set Collocation Parameters
 
 sDist = 300;
-% problem.options.method = 'trapezoid';
-problem.options.method = 'hermiteSimpson';
+problem.options.method = 'trapezoid';
+% problem.options.method = 'hermiteSimpson';
 
 switch problem.options.method
     case 'trapezoid'
@@ -57,11 +57,11 @@ problem.guess.control = linspace(200,200,nGrid);
 
 %% Set solver options and solve LapSim
 
-problem.options.nlpOpt = optimset(...
-    'display','iter',...
-    'MaxFunEval',1e6,...
-    'tolFun',1e-7);
+problem.options.nlpOpt = optimset();
+problem.options.nlpOpt.Display = 'iter';
+problem.options.nlpOpt.MaxFunEvals = 1e6;
 problem.options.nlpOpt.MaxIter = 1e4;
+problem.options.nlpOpt.TolFun = 1e-7;
 
 soln = Solver.LTS(problem);
 

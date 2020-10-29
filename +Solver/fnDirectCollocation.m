@@ -1,18 +1,19 @@
 function soln = fnDirectCollocation(problem)
-% soln = fnDirectCollocation(problem)
 
-%To make code more readable
+%% To make code more readable
+
 B       = problem.bounds;
 F       = problem.func;
 Opt     = problem.options;
 sLap    = problem.dsSystem.td.sLap;
+nGrid   = length(F.weights);
 
-nGrid = length(F.weights);
+%%  Pack the initial guess
 
-% Pack the initial guess
 [zGuess, pack] = packDecVar(problem.guess.state, problem.guess.control);
 
-% Unpack all bounds:
+%%  Pack the lower and upper bounds
+
 xLow = [B.initialState.low, B.state.low*ones(1,nGrid-2), B.finalState.low];
 uLow = B.control.low*ones(1,nGrid);
 zLow = packDecVar(xLow,uLow);
@@ -21,7 +22,8 @@ xUpp = [B.initialState.upp, B.state.upp*ones(1,nGrid-2), B.finalState.upp];
 uUpp = B.control.upp*ones(1,nGrid);
 zUpp = packDecVar(xUpp,uUpp);
 
-%%%% Set up problem for fmincon:
+%% Set up the functions, bounds, and options for fmincon
+
 P.objective = @(z)( myObjective(z, pack, F.objective, F.weights, sLap) );
 P.nonlcon = @(z)( myConstraint(z, pack, F.stateDynamics, F.constraints, F.defectCst, sLap) );
 
@@ -33,12 +35,12 @@ P.Aeq = []; P.beq = [];     % Unused
 P.options = Opt.nlpOpt;
 P.solver = 'fmincon';
 
-%%%% Call fmincon to solve the non-linear program (NLP)
+%% Call fmincon to solve the non-linear program (NLP)
 tic;
-[zSoln, objVal,exitFlag,output] = fmincon(P);
+[zSoln, objVal, exitFlag, output] = fmincon(P);
 nlpTime = toc;
 
-%%%% Store the results:
+%% Unpack the solution and store the results
 
 [xSoln,uSoln] = unPackDecVar(zSoln,pack); % Unpack decision variables
 
@@ -114,17 +116,17 @@ end
 %% Constraint Function
 
 function [c, ceq] = myConstraint(z,pack,dynFun,constraints,defectCst,sLap)
-% This function computes the defects along the trajectory
-% and then evaluates the user-defined constraint functions.
+% This function computes the defects along the path
+% and then evaluates the user-defined constraint functions
 
 [x,u] = unPackDecVar(z,pack);
 
-%%%% Compute defects along the trajectory:
+% Calculate defects along the path
 ds = (sLap(end) - sLap(1)) / (pack.nGrid - 1);
 f = dynFun(x,u);
 defects = defectCst(ds,x,f);
 
-%%%% Call user-defined constraints and pack up:
+% Call user-defined constraints and combine with defects
 [c, ceq] = Solver.fnCollectConstraints(x,u,defects,constraints);
 
 end
