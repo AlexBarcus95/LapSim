@@ -11,11 +11,11 @@ problem.options.method = 'trapezoid';
 
 switch problem.options.method
     case 'trapezoid'
-        nPoints = 50; % TEMP
+        nPoints = 100; % TEMP
         problem.options.trapezoid.nGrid = nPoints;
         nGrid = nPoints;
     case 'hermiteSimpson'
-        nPoints = 25; % TEMP
+        nPoints = 50; % TEMP
         problem.options.hermiteSimpson.nSegment = nPoints;
         nGrid = 2*nPoints + 1;
     otherwise
