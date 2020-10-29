@@ -1,14 +1,15 @@
 function fnPlotOutput(soln)
 
-f = figure(1); 
-clf(f);
+f2 = figure(2); 
+clf(f2);
+
+f2.Name = 'Output Solution';
 
 s = soln.grid.sLap;
 x = soln.grid.state;
 v = x(1,:);
 u = soln.grid.control;
 
-f.Name = num2str(soln.info.objVal);
 subplot(2,1,1);
 plot(s,v,'LineWidth',3);
 hold on
