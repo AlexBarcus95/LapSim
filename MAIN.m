@@ -28,7 +28,8 @@ td          = Initialise.fnInitTrack(sDist,nGrid);
 dsSystem    = Initialise.fnInitSystem(td);
 vd          = Initialise.fnInitVd(dsSystem);
 
-problem.dsSystem = dsSystem;
+problem.dsSystem    = dsSystem;
+problem.dsSystem.vd = vd;
 
 %% Set up function handles for the dynamics, objective, and constraints
 
