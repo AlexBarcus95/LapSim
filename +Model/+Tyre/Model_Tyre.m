@@ -13,16 +13,15 @@ classdef Model_Tyre
             vd.tyres.Pacejka.Fx2 = 0;%1/5000000;
         end
         
-        function [Fy] = Run(~, ~, u, vd)             
+        function [Fy] = Run(~, ~, u, vd)                         
+            T   = u(1,:);
+            a   = u(2,:);
+%             
 %             B = vd.tyres.Pacejka.B;
 %             C = vd.tyres.Pacejka.C;
 %             E = vd.tyres.Pacejka.E;
 %             
 %             mu_a = sin(C*atan(B*a - E*B*a + E*atan(B*a)));
-            
-            T   = u(1,:);
-            a   = u(2,:);
-            
             mu_a = a./pi;    % Tyre grip is linear with steering angle
             
             Fx  = T/vd.tyres.rear.Rl;
