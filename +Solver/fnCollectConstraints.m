@@ -2,7 +2,7 @@ function [c, ceq] = fnCollectConstraints(x,u,defects,constraints)
 
 ceq_dyn = reshape(defects,numel(defects),1);
 
-%%%% Compute the user-defined constraints:
+%% Compute the constraints defined by the constraint function
 if isempty(constraints)
     c_path = [];
     ceq_path = [];
@@ -12,7 +12,7 @@ else
     ceq_path = reshape(ceq_pathRaw,numel(ceq_pathRaw),1);
 end
 
-%%%% Pack everything up:
+%% Combine the constraints and defects
 c = c_path;
 ceq = [ceq_dyn; ceq_path];
 

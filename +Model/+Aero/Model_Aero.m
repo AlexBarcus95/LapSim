@@ -4,7 +4,7 @@ classdef Model_Aero
         
         function [vd] = Initialise(~, vd, ~)
             vd.aero.rho = 1.3;
-            vd.aero.Ax = 1.5;
+            vd.aero.Ax = 0.7;
             vd.aero.Cx = 1;
         end
         

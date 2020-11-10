@@ -1,7 +1,5 @@
 function dx = fnDynamics(x,u,vd)
-%
 % This function returns the dynamics of the car
-%
 
 v = x(1,:);
 T = u(1,:);

@@ -34,33 +34,39 @@ problem.dsSystem = dsSystem;
 
 problem.func.stateDynamics = @(x,u)( Controller.fnDynamics(x,u,vd) );
 problem.func.objective = @(x,u)( Controller.fnObjective(x) );
-problem.func.constraints = @(x,u)( Controller.fnConstraints(x,vd,dsSystem) );
+problem.func.constraints = @(x,u)( Controller.fnConstraints(x,u,vd,dsSystem) );
 
 %% Set up the bounds of the states and controls
 
 problem.bounds.state.low = 0;
 problem.bounds.state.upp = Inf;
 
-problem.bounds.initialState.low = 10;
+problem.bounds.initialState.low = 20;
 problem.bounds.initialState.upp = problem.bounds.initialState.low;
 
 problem.bounds.finalState.low = 1;
 problem.bounds.finalState.upp = Inf;
 
-problem.bounds.control.low = -500;
-problem.bounds.control.upp = 200;
+problem.bounds.control.low = [-500; -pi];
+problem.bounds.control.upp = [200; pi];
 
 %% Set initial guess
 
-problem.guess.state = linspace(12,12,nGrid);
-problem.guess.control = linspace(200,200,nGrid);
+v_guess = linspace(12,12,nGrid);
+T_guess = linspace(200,200,nGrid);
+a_guess = linspace(0,0,nGrid);
+
+problem.guess.state = v_guess;
+
+problem.guess.control = [T_guess; 
+                        a_guess];
 
 %% Set solver options and solve LapSim
 
 problem.options.nlpOpt = optimset();
 problem.options.nlpOpt.Display = 'iter';
 problem.options.nlpOpt.MaxFunEvals = 1e6;
-problem.options.nlpOpt.MaxIter = 1e4;
+problem.options.nlpOpt.MaxIter = 5e3;
 problem.options.nlpOpt.TolFun = 1e-7;
 
 soln = Solver.LTS(problem);
