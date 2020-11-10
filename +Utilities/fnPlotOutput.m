@@ -49,17 +49,19 @@ ylim([soln.problem.bounds.control.low(1), soln.problem.bounds.control.upp(1)]);
 title('Torque profile');
 grid on
 
-%% Plot the lateral tyre load
+%% Plot the lateral tyre grip
 subplot(2,2,4);
 dsSystem = soln.problem.dsSystem;
 vd = dsSystem.vd;
 Fy = dsSystem.Models.Tyre.Run(x,u,vd);
-plot(a,Fy,'o');
+Fz = vd.chassis.m*9.81;
+mu = Fy./Fz;
+plot(a,mu,'o');
 xlabel('steering (deg)');
-ylabel('Fy (N)');
+ylabel('Lateral grip');
 xlim([min(a), max(a)]);
-ylim([min(Fy), max(Fy)]);
-title('Fy vs. steering angle');
+ylim([min(mu), max(mu)]);
+title('Lateral grip vs. steering angle');
 grid on
 
 %% Set title
