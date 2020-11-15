@@ -77,7 +77,7 @@ vd = dsSystem.vd;
 Fy = dsSystem.Models.Tyre.Run(x,u,vd);
 Fz = vd.chassis.m*9.81;
 a_model = -pi:0.01:pi;
-T_model = linspace(200,200,length(a_model));
+T_model = linspace(0,0,length(a_model));
 Fy_model = soln.problem.dsSystem.Models.Tyre.Run(x,[T_model;a_model],vd);
 plot(a_model.*180/pi,Fy_model./Fz, 'LineWidth', 3, 'Color', 'r');
 hold on;

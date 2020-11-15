@@ -8,8 +8,8 @@ classdef Model_Tyre
             vd.tyres.Pacejka.B = 1;
             vd.tyres.Pacejka.C = 1.9;
             vd.tyres.Pacejka.E = 0.6;
-            vd.tyres.Pacejka.Fz1 = 0;%1/7000;
-            vd.tyres.Pacejka.Fx1 = 0;%1/10000;
+            vd.tyres.Pacejka.Fz1 = 1/7000;
+            vd.tyres.Pacejka.Fx1 = 1/10000;
             vd.tyres.Pacejka.Fx2 = 0;%1/5000000;
         end
         
@@ -25,7 +25,7 @@ classdef Model_Tyre
             
             Fx  = T/vd.tyres.rear.Rl;
             Fz 	= vd.chassis.m*9.81;
-            D  	= 1 - Fz*vd.tyres.Pacejka.Fz1 - Fx*vd.tyres.Pacejka.Fx1 - (Fx.^2)*vd.tyres.Pacejka.Fx2;
+            D  	= 1 - Fz*vd.tyres.Pacejka.Fz1 - abs(Fx)*vd.tyres.Pacejka.Fx1 - (Fx.^2)*vd.tyres.Pacejka.Fx2;
             
             Fy 	= Fz*D.*mu_a;
         end
