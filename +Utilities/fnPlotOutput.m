@@ -13,8 +13,12 @@ a = u(2,:).*180/pi;
 
 %% Plot the velocity profile
 subplot(2,2,1);
-plot(s,v,'LineWidth',3,'Color','b');
 hold on;
+if bOverlayGuess
+    plot(s,soln.problem.guess.state(1,:),'LineWidth',2,'Color','r','HandleVisibility','off');
+    plot(s,soln.problem.guess.state(1,:),'or');
+end
+plot(s,v,'LineWidth',3,'Color','b');
 plot(s,v,'ob','HandleVisibility','off');
 xlabel('distance (m)');
 ylabel('velocity (m/s)');
@@ -23,14 +27,17 @@ ylim([0, 100*round(max(v)/100,1) + 5]);
 title('Velocity profile');
 grid on;
 if bOverlayGuess
-    plot(s,soln.problem.guess.state(1,:),'or');
-    legend('Final Result', 'Initial Guess');
+    legend('Initial Guess', 'Final Result');
 end
 
 %% Plot the steering trace
 subplot(2,2,2);
-plot(s,a,'LineWidth',2,'Color','b');
 hold on;
+if bOverlayGuess
+    plot(s,soln.problem.guess.control(2,:).*180/pi,'LineWidth',2,'Color','r','HandleVisibility','off');
+    plot(s,soln.problem.guess.control(2,:).*180/pi,'or');
+end
+plot(s,a,'LineWidth',2,'Color','b');
 plot(s,a,'ob','HandleVisibility','off');
 plot(s,zeros(1,length(s)), '--b','HandleVisibility','off')
 xlabel('distance (m)');
@@ -40,14 +47,17 @@ ylim([soln.problem.bounds.control.low(2)*180/pi, soln.problem.bounds.control.upp
 title('Steering trace');
 grid on;
 if bOverlayGuess
-    plot(s,soln.problem.guess.control(2,:).*180/pi,'or');
-    legend('Final Result', 'Initial Guess');
+    legend('Initial Guess', 'Final Result');
 end
 
 %% Plot the torque profile
 subplot(2,2,3);
-plot(s,T,'LineWidth',2,'Color','b');
 hold on;
+if bOverlayGuess
+    plot(s,soln.problem.guess.control(1,:),'LineWidth',2,'Color','r','HandleVisibility','off');
+    plot(s,soln.problem.guess.control(1,:),'or');
+end
+plot(s,T,'LineWidth',2,'Color','b');
 plot(s,T,'ob','HandleVisibility','off');
 plot(s,zeros(1,length(s)), '--b','HandleVisibility','off')
 xlabel('distance (m)');
@@ -57,8 +67,7 @@ ylim([soln.problem.bounds.control.low(1), soln.problem.bounds.control.upp(1)]);
 title('Torque profile');
 grid on;
 if bOverlayGuess
-    plot(s,soln.problem.guess.control(1,:),'or');
-    legend('Final Result', 'Initial Guess');
+    legend('Initial Guess', 'Final Result');
 end
 
 %% Plot the lateral tyre grip
@@ -83,6 +92,6 @@ title('Lateral grip vs. steering angle');
 grid on
 
 %% Set title
-f2.Name = ['Maneouvre Time: ', num2str(soln.info.objVal), 's || Solve Time:', num2str(soln.info.nlpTime), 's'];
+f2.Name = ['Maneouvre Time: ', num2str(soln.info.objVal), 's || Solve Time: ', num2str(soln.info.nlpTime), 's'];
 
 end
