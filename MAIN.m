@@ -53,21 +53,27 @@ problem.bounds.control.upp = [200; pi];
 
 %% Set initial guess
 
-v_guess = linspace(12,12,nGrid);
-T_guess = linspace(200,200,nGrid);
-a_guess = linspace(0,0,nGrid);
+customGuess = load([cd, '/customGuess.mat']);
 
-problem.guess.state = v_guess;
+sLap_old = customGuess.soln.grid.sLap;
+v_old = customGuess.soln.grid.state(1,:);
+T_old = customGuess.soln.grid.control(1,:);
+a_old = customGuess.soln.grid.control(2,:);
 
-problem.guess.control = [T_guess; 
-                        a_guess];
+v_guess = interp1(sLap_old, v_old, problem.dsSystem.td.sLap).*0.95;
+T_guess = interp1(sLap_old, T_old, problem.dsSystem.td.sLap);
+a_guess = interp1(sLap_old, a_old, problem.dsSystem.td.sLap).*0.8;
+
+problem.guess.state     = v_guess;
+problem.guess.control   = [T_guess;
+                           a_guess];
 
 %% Set solver options and solve LapSim
 
 problem.options.nlpOpt = optimset();
 problem.options.nlpOpt.Display = 'iter';
 problem.options.nlpOpt.MaxFunEvals = 1e6;
-problem.options.nlpOpt.MaxIter = 5e3;
+problem.options.nlpOpt.MaxIter = 2e3;
 problem.options.nlpOpt.TolFun = 1e-7;
 
 soln = Solver.LTS(problem);

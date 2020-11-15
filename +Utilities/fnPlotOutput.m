@@ -20,7 +20,7 @@ xlabel('distance (m)');
 ylabel('velocity (m/s)');
 xlim([s(1), s(end)]);
 ylim([0, 100*round(max(v)/100,1) + 5]);
-title(['Velocity profile || ', num2str(soln.info.objVal), 's || ', num2str(soln.info.nlpTime), 's']);
+title('Velocity profile');
 grid on;
 if bOverlayGuess
     plot(s,soln.problem.guess.state(1,:),'or');
@@ -40,7 +40,7 @@ ylim([soln.problem.bounds.control.low(2)*180/pi, soln.problem.bounds.control.upp
 title('Steering trace');
 grid on;
 if bOverlayGuess
-    plot(s,soln.problem.guess.control(2,:),'or');
+    plot(s,soln.problem.guess.control(2,:).*180/pi,'or');
     legend('Final Result', 'Initial Guess');
 end
 
@@ -67,11 +67,17 @@ dsSystem = soln.problem.dsSystem;
 vd = dsSystem.vd;
 Fy = dsSystem.Models.Tyre.Run(x,u,vd);
 Fz = vd.chassis.m*9.81;
+a_model = -pi:0.01:pi;
+T_model = linspace(200,200,length(a_model));
+Fy_model = soln.problem.dsSystem.Models.Tyre.Run(x,[T_model;a_model],vd);
+plot(a_model.*180/pi,Fy_model./Fz, 'LineWidth', 3, 'Color', 'r');
+hold on;
+
 mu = Fy./Fz;
-plot(a,mu,'o');
+plot(a,mu,'ob');
 xlabel('steering (deg)');
 ylabel('Lateral grip');
-xlim([min(a), max(a)]);
+xlim([min(a), soln.problem.bounds.control.upp(2) * 180/pi]);
 ylim([min(mu), max(mu)]);
 title('Lateral grip vs. steering angle');
 grid on
