@@ -10,7 +10,7 @@ classdef Model_Tyre
             vd.tyres.Pacejka.E = 0.6;
             vd.tyres.Pacejka.Fz1 = 1/7000;
             vd.tyres.Pacejka.Fx1 = 1/10000;
-            vd.tyres.Pacejka.Fx2 = 0;%1/5000000;
+            vd.tyres.Pacejka.Fx2 = 1/15000000;
         end
         
         function [Fy] = Run(~, ~, u, vd)                         

@@ -15,11 +15,11 @@ a = u(2,:).*180/pi;
 subplot(2,2,1);
 hold on;
 if bOverlayGuess
-    plot(s,soln.problem.guess.state(1,:),'LineWidth',2,'Color','r','HandleVisibility','off');
-    plot(s,soln.problem.guess.state(1,:),'or');
+    plot(s,soln.problem.guess.state(1,:),'LineWidth',2,'Color','r');
+%     plot(s,soln.problem.guess.state(1,:),'or','HandleVisibility','off');
 end
-plot(s,v,'LineWidth',3,'Color','b');
-plot(s,v,'ob','HandleVisibility','off');
+plot(s,v,'LineWidth',2,'Color','b');
+% plot(s,v,'ob','HandleVisibility','off');
 xlabel('distance (m)');
 ylabel('velocity (m/s)');
 xlim([s(1), s(end)]);
@@ -34,11 +34,11 @@ end
 subplot(2,2,2);
 hold on;
 if bOverlayGuess
-    plot(s,soln.problem.guess.control(2,:).*180/pi,'LineWidth',2,'Color','r','HandleVisibility','off');
-    plot(s,soln.problem.guess.control(2,:).*180/pi,'or');
+    plot(s,soln.problem.guess.control(2,:).*180/pi,'LineWidth',2,'Color','r');
+%     plot(s,soln.problem.guess.control(2,:).*180/pi,'or','HandleVisibility','off');
 end
 plot(s,a,'LineWidth',2,'Color','b');
-plot(s,a,'ob','HandleVisibility','off');
+% plot(s,a,'ob','HandleVisibility','off');
 plot(s,zeros(1,length(s)), '--b','HandleVisibility','off')
 xlabel('distance (m)');
 ylabel('steering (deg)');
@@ -54,11 +54,11 @@ end
 subplot(2,2,3);
 hold on;
 if bOverlayGuess
-    plot(s,soln.problem.guess.control(1,:),'LineWidth',2,'Color','r','HandleVisibility','off');
-    plot(s,soln.problem.guess.control(1,:),'or');
+    plot(s,soln.problem.guess.control(1,:),'LineWidth',2,'Color','r');
+%     plot(s,soln.problem.guess.control(1,:),'or','HandleVisibility','off');
 end
 plot(s,T,'LineWidth',2,'Color','b');
-plot(s,T,'ob','HandleVisibility','off');
+% plot(s,T,'ob','HandleVisibility','off');
 plot(s,zeros(1,length(s)), '--b','HandleVisibility','off')
 xlabel('distance (m)');
 ylabel('torque (Nm)');
