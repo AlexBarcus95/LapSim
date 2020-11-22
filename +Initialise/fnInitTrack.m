@@ -1,10 +1,19 @@
-function [td] = fnInitTrack(sDist,nGrid)
+function [problem] = fnInitTrack(problem)
 
 %% Generate the track definition
 
+switch problem.options.method
+    case 'trapezoid'
+        nGrid = problem.options.trapezoid.nGrid;
+    case 'hermiteSimpson'
+        nGrid = 2*problem.options.hermiteSimpson.nSegment + 1;
+    otherwise
+        error('Invalid method.');
+end
+
 td = struct();
 
-td.sLap = linspace(0,sDist,nGrid);
+td.sLap = linspace(0,300,nGrid);
 td.curv = zeros(1,nGrid);
 td.curv( (td.sLap > median(td.sLap)) & (td.sLap < (median(td.sLap) + pi*20) )) = 1/22;
 td.curv_nosmooth = td.curv; % Store
@@ -18,6 +27,8 @@ td.yCar 	= cumsum(td.d_sLap.*sin(-td.aYaw));
 %% Plot the track definition
 
 fnPlotTrackDefinition(td);
+
+problem.dsSystem.td = td;
 
 end
 

@@ -17,7 +17,7 @@ switch problem.options.method
         problem.func.defectCst = @computeTrapezoidDefects;
         
     case 'hermiteSimpson'
-        nGrid = 2*problem.options.hermiteSimpson.nSegment+1;
+        nGrid = 2*problem.options.hermiteSimpson.nSegment + 1;
         % Set quadrature weights for HS integration
         problem.func.weights = (2/3)*ones(nGrid,1);
         problem.func.weights(2:2:end) = 4/3;
