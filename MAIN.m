@@ -7,7 +7,7 @@ clc;
 
 problem = Initialise.fnInitMethod('trapezoid');
 problem = Initialise.fnInitSystem(problem);
-problem = Initialise.fnInitTrack(problem);
+problem = Initialise.fnInitTrack(problem, false);
 problem = Initialise.fnInitVd(problem);
 problem = Initialise.fnInitFunctionHandles(problem);
 problem = Initialise.fnInitBounds(problem);

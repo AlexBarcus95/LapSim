@@ -1,4 +1,4 @@
-function [problem] = fnInitTrack(problem)
+function [problem] = fnInitTrack(problem, bPlotTrackDef)
 
 %% Generate the track definition
 
@@ -24,11 +24,13 @@ td.aYaw  	= cumsum(td.curv.*td.d_sLap);
 td.xCar 	= cumsum(td.d_sLap.*cos(-td.aYaw));
 td.yCar 	= cumsum(td.d_sLap.*sin(-td.aYaw));
 
+problem.dsSystem.td = td;
+
 %% Plot the track definition
 
-fnPlotTrackDefinition(td);
-
-problem.dsSystem.td = td;
+if bPlotTrackDef
+    fnPlotTrackDefinition(td);
+end
 
 end
 
