@@ -43,3 +43,4 @@ soln = Solver.LTS(problem);
 %% Plot solution
 
 PostProcess.fnPlotOutput(soln, true);
+PostProcess.fnPlotOutputSingle(soln);
