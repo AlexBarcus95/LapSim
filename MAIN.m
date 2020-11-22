@@ -42,5 +42,4 @@ soln = Solver.LTS(problem);
 
 %% Plot solution
 
-bOverlayGuess = true;
-Utilities.fnPlotOutput(soln, bOverlayGuess);
+PostProcess.fnPlotOutput(soln, true);
