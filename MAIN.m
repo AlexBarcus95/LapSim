@@ -14,7 +14,7 @@ problem = Initialise.fnInitBounds(problem);
 
 %% Get initial estimate
 
-problem = PreProcess.fnGetInitialEstimate(problem, 'load');
+problem = PreProcess.fnGetInitialEstimate(problem, 'PreSim');
 
 %% Set solver options and solve LapSim
 

@@ -1,7 +1,7 @@
 function [problem] = fnGetInitialEstimate(problem, sMethod)
 
 switch sMethod
-    case 'load'
+    case 'Load'
         customGuess = load([cd, '/customGuess.mat']);
         
         sLap_old = customGuess.soln.grid.sLap;
@@ -16,6 +16,8 @@ switch sMethod
         problem.guess.state   	= v_guess;
         problem.guess.control   = [T_guess;
                                    a_guess];
+    case 'PreSim'
+        problem = PreProcess.fnPreSimulate(problem);
     otherwise
         error('Select a method for finding the initial estimate');
 end
