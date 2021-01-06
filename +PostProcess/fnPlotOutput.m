@@ -11,11 +11,16 @@ v = x(1,:);
 T = u(1,:);
 a = u(2,:).*180/pi;
 
+guess_scale = 1;
+if soln.problem.dsSystem.PreSim.enabled
+    guess_scale = soln.problem.dsSystem.PreSim.scale;
+end
+
 %% Plot the velocity profile
 subplot(2,2,1);
 hold on;
 if bOverlayGuess
-    plot(s,soln.problem.guess.state(1,:),'LineWidth',2,'Color','r');
+    plot(s,soln.problem.guess.state(1,:)./guess_scale,'LineWidth',2,'Color','r');
 %     plot(s,soln.problem.guess.state(1,:),'or','HandleVisibility','off');
 end
 plot(s,v,'LineWidth',2,'Color','b');
@@ -34,7 +39,7 @@ end
 subplot(2,2,2);
 hold on;
 if bOverlayGuess
-    plot(s,soln.problem.guess.control(2,:).*180/pi,'LineWidth',2,'Color','r');
+    plot(s,soln.problem.guess.control(2,:).*(180/pi)./guess_scale,'LineWidth',2,'Color','r');
 %     plot(s,soln.problem.guess.control(2,:).*180/pi,'or','HandleVisibility','off');
 end
 plot(s,a,'LineWidth',2,'Color','b');
@@ -54,7 +59,7 @@ end
 subplot(2,2,3);
 hold on;
 if bOverlayGuess
-    plot(s,soln.problem.guess.control(1,:),'LineWidth',2,'Color','r');
+    plot(s,soln.problem.guess.control(1,:)./guess_scale,'LineWidth',2,'Color','r');
 %     plot(s,soln.problem.guess.control(1,:),'or','HandleVisibility','off');
 end
 plot(s,T,'LineWidth',2,'Color','b');
